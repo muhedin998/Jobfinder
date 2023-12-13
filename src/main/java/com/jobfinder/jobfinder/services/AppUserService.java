@@ -13,4 +13,6 @@ public interface AppUserService {
     List<AppUser> getAllUser();
 
     AppUser getUserById(Long id);
+
+    AppUser findByUsername(String username);
 }
