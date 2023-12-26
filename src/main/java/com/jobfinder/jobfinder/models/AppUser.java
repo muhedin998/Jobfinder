@@ -34,6 +34,16 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Roles role;
 
+    public static AppUser getEmptyUser() {
+        return AppUser.builder()
+                .fullName("")
+                .username("")
+                .email("")
+                .password("")
+                .role(Roles.USER)
+                .build();
+    }
+
     @Override
     public String getUsername() {
         return username;

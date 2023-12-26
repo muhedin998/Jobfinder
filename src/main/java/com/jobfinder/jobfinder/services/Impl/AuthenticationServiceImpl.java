@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl {
 
     private final JwtServiceImpl jwtService;
     private final AuthenticationManager authenticationManager;
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request) throws Exception{
         var user = AppUser.builder()
                 .fullName(request.getFullName())
                 .username(request.getUsername())
@@ -30,12 +30,17 @@ public class AuthenticationServiceImpl {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Roles.USER)
                 .build();
-
-                appUserService.createUser(user);
-                var jwtToken = jwtService.generateToken(user);
-                return AuthenticationResponse.builder()
-                        .token(jwtToken)
-                        .build();
+        var userForCompare = appUserService.findOptionalUser(user.getUsername());
+                if(userForCompare.isPresent() && userForCompare.get().getEmail() != user.getEmail()){
+                    throw  new Exception("User with this email or username already exists");
+                } else {
+                    appUserService.createUser(user);
+                    var jwtToken = jwtService.generateToken(user);
+                    return AuthenticationResponse.builder()
+                            .user(user)
+                            .token(jwtToken)
+                            .build();
+        }
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -48,6 +53,7 @@ public class AuthenticationServiceImpl {
         var user = appUserService.findByUsername(request.getUsername());
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
+                .user(user)
                 .token(jwtToken)
                 .build();
     }

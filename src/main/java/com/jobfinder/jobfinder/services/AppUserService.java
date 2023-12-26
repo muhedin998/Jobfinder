@@ -3,6 +3,7 @@ package com.jobfinder.jobfinder.services;
 import com.jobfinder.jobfinder.models.AppUser;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AppUserService {
 
@@ -15,4 +16,6 @@ public interface AppUserService {
     AppUser getUserById(Long id);
 
     AppUser findByUsername(String username);
+
+    Optional<AppUser> findOptionalUser(String username);
 }

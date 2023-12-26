@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -38,6 +39,16 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser findByUsername(String username) {
-        return appUserRepository.findByUsername(username).get();
+        Optional<AppUser> maybeUser = appUserRepository.findByUsername(username);
+        if(maybeUser.isEmpty()) {
+            return AppUser.getEmptyUser();
+        } else {
+            return maybeUser.get();
+        }
+    }
+
+    @Override
+    public Optional<AppUser> findOptionalUser(String username) {
+        return appUserRepository.findByUsername(username);
     }
 }
