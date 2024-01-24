@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -17,11 +18,14 @@ public class JobController {
 
     @PostMapping("/create")
     public ResponseEntity<Job> createJob (@RequestBody Job job) {
-        return ResponseEntity.ok(jobService.createJob(job));
+        var newJob = job;
+        newJob.setDatePosted(LocalDate.now());
+        return ResponseEntity.ok(jobService.createJob(newJob));
     }
 
     @GetMapping("/get-all-jobs")
     public ResponseEntity<List<Job>> getAllJobs () {
+        System.out.println(LocalDate.now());
         return ResponseEntity.ok(jobService.getAllJobs());
     }
 
