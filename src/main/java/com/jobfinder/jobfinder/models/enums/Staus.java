@@ -1,4 +1,4 @@
-package com.jobfinder.jobfinder.models;
+package com.jobfinder.jobfinder.models.enums;
 
 public enum Staus {
     ACTIVE,

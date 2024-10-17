@@ -1,26 +1,27 @@
 package com.jobfinder.jobfinder.controllers;
 
-import com.jobfinder.jobfinder.models.Job;
+import com.jobfinder.jobfinder.models.entities.Job;
 import com.jobfinder.jobfinder.services.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/job")
 @CrossOrigin("*")
-public class JobController {
+public class  JobController {
     @Autowired
     private JobService jobService;
 
     @PostMapping("/create")
     public ResponseEntity<Job> createJob (@RequestBody Job job) {
         var newJob = job;
-        newJob.setDatePosted(LocalDate.now());
+        newJob.setDatePosted(LocalDateTime.now());
         return ResponseEntity.ok(jobService.createJob(newJob));
     }
 

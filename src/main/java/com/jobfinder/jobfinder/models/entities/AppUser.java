@@ -1,4 +1,4 @@
-package com.jobfinder.jobfinder.models;
+package com.jobfinder.jobfinder.models.entities;
 
 import com.jobfinder.jobfinder.models.enums.Roles;
 import jakarta.persistence.*;
@@ -10,8 +10,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -31,8 +33,30 @@ public class AppUser implements UserDetails {
 
     private String password;
 
+    private String passwordHash;
+
     @Enumerated(EnumType.STRING)
     private Roles role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Applications> applications;
+
+    @OneToMany(mappedBy = "user")
+    private List<Job> jobs;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Notifications> notifications;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_skills",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
+    private Set<Skill> skills;
+
+    private LocalDateTime dateCreated;
+
 
     public static AppUser getEmptyUser() {
         return AppUser.builder()

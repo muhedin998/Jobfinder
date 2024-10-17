@@ -1,8 +1,8 @@
 package com.jobfinder.jobfinder.controllers;
 
-import com.jobfinder.jobfinder.models.AuthenticationRequest;
-import com.jobfinder.jobfinder.models.AuthenticationResponse;
-import com.jobfinder.jobfinder.models.RegisterRequest;
+import com.jobfinder.jobfinder.models.dtos.request.AuthenticationRequest;
+import com.jobfinder.jobfinder.models.dtos.response.AuthenticationResponse;
+import com.jobfinder.jobfinder.models.dtos.request.UserRegisterDTO;
 import com.jobfinder.jobfinder.services.Impl.AuthenticationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register (
-            @RequestBody RegisterRequest request
+            @RequestBody UserRegisterDTO request
     ) throws Exception {
         return ResponseEntity.ok(authenticationService.register(request));
     }

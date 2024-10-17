@@ -1,16 +1,14 @@
 package com.jobfinder.jobfinder.services.Impl;
 
-import com.jobfinder.jobfinder.models.AppUser;
-import com.jobfinder.jobfinder.models.AuthenticationRequest;
-import com.jobfinder.jobfinder.models.AuthenticationResponse;
-import com.jobfinder.jobfinder.models.RegisterRequest;
+import com.jobfinder.jobfinder.models.entities.AppUser;
+import com.jobfinder.jobfinder.models.dtos.request.AuthenticationRequest;
+import com.jobfinder.jobfinder.models.dtos.response.AuthenticationResponse;
+import com.jobfinder.jobfinder.models.dtos.request.UserRegisterDTO;
 import com.jobfinder.jobfinder.models.enums.Roles;
-import com.jobfinder.jobfinder.repositories.AppUserRepository;
 import com.jobfinder.jobfinder.services.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,7 @@ public class AuthenticationServiceImpl {
 
     private final JwtServiceImpl jwtService;
     private final AuthenticationManager authenticationManager;
-    public AuthenticationResponse register(RegisterRequest request) throws Exception{
+    public AuthenticationResponse register(UserRegisterDTO request) throws Exception{
         var user = AppUser.builder()
                 .fullName(request.getFullName())
                 .username(request.getUsername())

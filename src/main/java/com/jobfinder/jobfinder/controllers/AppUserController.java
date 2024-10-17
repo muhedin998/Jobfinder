@@ -1,6 +1,6 @@
 package com.jobfinder.jobfinder.controllers;
 
-import com.jobfinder.jobfinder.models.AppUser;
+import com.jobfinder.jobfinder.models.entities.AppUser;
 import com.jobfinder.jobfinder.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

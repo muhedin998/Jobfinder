@@ -1,5 +1,6 @@
-package com.jobfinder.jobfinder.models;
+package com.jobfinder.jobfinder.models.dtos.response;
 
+import com.jobfinder.jobfinder.models.entities.AppUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.jobfinder.jobfinder.models;
+package com.jobfinder.jobfinder.models.dtos.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,11 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class AuthenticationRequest {
+public class UserRegisterDTO {
+    private String fullName;
+
     private String username;
 
-    String password;
+    private String email;
+
+    private String password;
 }

@@ -1,6 +1,6 @@
 package com.jobfinder.jobfinder.services;
 
-import com.jobfinder.jobfinder.models.AppUser;
+import com.jobfinder.jobfinder.models.entities.AppUser;
 
 import java.util.List;
 import java.util.Optional;

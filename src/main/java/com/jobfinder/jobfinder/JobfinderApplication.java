@@ -3,7 +3,7 @@ package com.jobfinder.jobfinder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.jobfinder.jobfinder")
 public class JobfinderApplication {
 
 	public static void main(String[] args) {
