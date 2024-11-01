@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ApplicationsService {
 
-    List<JobApplicationResponseDTO> getApplicationsByUser();
+    List<JobApplicationResponseDTO> getApplicationsByUser(Long id);
 }

@@ -1,5 +1,6 @@
 package com.jobfinder.jobfinder.models.dtos.response;
 
+import com.jobfinder.jobfinder.models.dtos.SkillDTO;
 import com.jobfinder.jobfinder.models.enums.Roles;
 import lombok.Data;
 
@@ -12,6 +13,6 @@ public class UserResponseDTO {
     private String username;
     private String email;
     private Roles role;
-    private Set<SkillResponseDTO> skills;
+    private Set<SkillDTO> skills;
     private LocalDateTime createdAt;
 }

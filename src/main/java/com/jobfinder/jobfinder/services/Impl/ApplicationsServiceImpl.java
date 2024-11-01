@@ -22,10 +22,15 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public List<JobApplicationResponseDTO> getApplicationsByUser() {
-        JobApplicationMapper mapper = new JobApplicationMapper(new AppUserMapper(new Ski), new JobMapper());
-        List<JobApplicationResponseDTO> applications = applicationsRepository.findAll().stream().map(applications1 -> new JobApplicationMapper(applications1)).collect(Collectors.toList());
-        JobApplicationResponseDTO response = JobApplicationMapper.toDto(applicationsRepository.findAll());
+    public List<JobApplicationResponseDTO> getApplicationsByUser(Long id) {
         return null;
     }
+
+//    @Override
+//    public List<JobApplicationResponseDTO> getApplicationsByUser() {
+//        JobApplicationMapper mapper = new JobApplicationMapper(new AppUserMapper(new Ski), new JobMapper());
+//        List<JobApplicationResponseDTO> applications = applicationsRepository.findAll().stream().map(applications1 -> new JobApplicationMapper(applications1)).collect(Collectors.toList());
+//        JobApplicationResponseDTO response = JobApplicationMapper.toDto(applicationsRepository.findAll());
+//        return null;
+//    }
 }

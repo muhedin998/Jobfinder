@@ -11,4 +11,6 @@ public class JobApplicationResponseDTO {
     private UserResponseDTO user;
     private String applicationStatus;
     private LocalDateTime appliedAt;
+    private String coverLetter;
+    private String cvLink;
 }
