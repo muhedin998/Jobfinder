@@ -19,7 +19,7 @@ public enum JobMapper implements DTOMapper<Job, JobResponseDTO> {
         Job job = jobService.getJobById(dto.getJobId());
 
         job.setId(dto.getJobId());
-        job.setTitel(dto.getTitle());
+        job.setTitle(dto.getTitle());
         job.setDescription(dto.getDescription());
         job.setRequirmnets(dto.getRequirements());
         job.setLocation(dto.getLocation());
