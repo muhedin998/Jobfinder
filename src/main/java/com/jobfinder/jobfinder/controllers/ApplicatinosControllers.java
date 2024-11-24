@@ -16,7 +16,7 @@ import java.util.List;
 public class ApplicatinosControllers {
     private final ApplicationsService applicationsService;
 
-    @GetMapping("/user/{id]")
+    @GetMapping("/user/{id}")
     public List<JobApplicationResponseDTO> getByUser(@PathVariable Long id) {
         return applicationsService.getApplicationsByUser(id);
     }

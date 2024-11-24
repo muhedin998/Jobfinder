@@ -15,6 +15,6 @@ public class JobCategory {
 
     private String categoryName;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "jobCategory")
     private Set<Job> jobs;
 }

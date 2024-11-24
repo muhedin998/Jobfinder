@@ -57,6 +57,10 @@ public class Job {
     @JoinColumn(name = "category_id")
     private JobCategory jobCategory;
 
+    @ManyToOne
+    @JoinTable(name = "company_id")
+    private Company company;
+
     public static Job toEntity(JobRequestDTO jobRequestDTO) {
         Job job = new Job();
         job.setTitle(jobRequestDTO.getTitle());
