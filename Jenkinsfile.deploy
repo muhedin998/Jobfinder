@@ -35,7 +35,7 @@ pipeline {
                         cp target/*.jar ${env.DEPLOY_PATH}/${env.JAR_NAME}
 
                         # Create systemd service file
-                        cat <<EOF | sudo tee /etc/systemd/system/${env.SERVICE_NAME}.service
+                        cat <<EOF | tee /etc/systemd/system/${env.SERVICE_NAME}.service
                         [Unit]
                         Description=JobFinder Application
                         After=network.target
@@ -53,9 +53,9 @@ pipeline {
                         EOF
 
                         # Reload and enable the service
-                        sudo systemctl daemon-reload
-                        sudo systemctl enable ${env.SERVICE_NAME}.service
-                        sudo systemctl restart ${env.SERVICE_NAME}.service
+                        systemctl daemon-reload
+                        systemctl enable ${env.SERVICE_NAME}.service
+                        systemctl restart ${env.SERVICE_NAME}.service
                     """
                 }
             }
