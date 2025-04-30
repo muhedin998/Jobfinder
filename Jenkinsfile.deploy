@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'DEPLOY_HOST', defaultValue: 'your-server-ip', description: 'Remote Ubuntu server IP')
+        string(name: 'DEPLOY_USER', defaultValue: 'ubuntu', description: 'Remote SSH username')
+        string(name: 'PORT', defaultValue: '8081', description: 'Port to run the app on')
+    }
+
+    environment {
+        REMOTE_PATH = "/opt/jobfinder"
+        JAR_NAME = "jobfinder.jar"
+    }
+
+    stages {
+        stage('Copy Artifact from Build Job') {
+            steps {
+                copyArtifacts(
+                    projectName: 'jobfinder-build',
+                    selector: lastSuccessful(),
+                    filter: 'target/*.jar',
+                    fingerprint: true
+                )
+            }
+        }
+
+        stage('Deploy to Server') {
+            steps {
+                script {
+                    def remote = "${params.DEPLOY_USER}@${params.DEPLOY_HOST}"
+                    sh """
+                        ssh ${remote} 'mkdir -p ${env.REMOTE_PATH}'
+                        scp target/*.jar ${remote}:${env.REMOTE_PATH}/${env.JAR_NAME}
+                        ssh ${remote} 'pkill -f ${env.JAR_NAME} || true'
+                        ssh ${remote} 'nohup java -jar ${env.REMOTE_PATH}/${env.JAR_NAME} --server.port=${params.PORT} > ${env.REMOTE_PATH}/app.log 2>&1 &'
+                    """
+                }
+            }
+        }
+    }
+}

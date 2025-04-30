@@ -22,9 +22,9 @@ pipeline {
             }
         }
 
-        stage('Run App') {
+        stage('Archive') {
             steps {
-                sh 'nohup java -jar target/*.jar --server.port=8081 &'
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
     }
