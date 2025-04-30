@@ -17,9 +17,10 @@ pipeline {
             steps {
                 copyArtifacts(
                     projectName: 'Jobfinder Spring Boot',
-                    selector: lastSuccessful(),
+                    selector: specific('lastSuccessfulBuild'),
                     filter: 'target/*.jar',
-                    fingerprint: true
+                    fingerprint: true,
+                    target: 'target/'
                 )
             }
         }
