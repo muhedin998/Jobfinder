@@ -19,8 +19,8 @@ pipeline {
                     projectName: 'Jobfinder Spring Boot',
                     selector: specific('lastSuccessfulBuild'),
                     filter: 'target/*.jar',
-                    fingerprint: true,
-                    target: 'target/'
+                    fingerprintArtifacts: true,  // Correct parameter name
+                    target: 'target/'  // Optional: specify target directory
                 )
             }
         }
