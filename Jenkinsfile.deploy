@@ -38,7 +38,7 @@ pipeline {
                         cp target/target/*.jar ${env.DEPLOY_PATH}/${env.JAR_NAME}
 
                         # Create systemd service file
-                        cat <<EOF | tee /etc/systemd/system/${env.SERVICE_NAME}.service
+                        cat <<EOF | sudo tee /etc/systemd/system/${env.SERVICE_NAME}.service
                         [Unit]
                         Description=JobFinder Application
                         After=network.target
