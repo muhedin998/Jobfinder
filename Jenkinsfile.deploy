@@ -80,19 +80,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        failure {
-            slackSend(
-                channel: '#deployments',
-                message: "🚨 Deployment of JobFinder failed! Check Jenkins: ${env.BUILD_URL}"
-            )
-        }
-        success {
-            slackSend(
-                channel: '#deployments',
-                message: "✅ JobFinder deployed successfully on port ${params.PORT}! ${env.BUILD_URL}"
-            )
-        }
-    }
 }
