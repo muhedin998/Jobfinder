@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to build')
+        string(name: 'BRANCH', defaultValue: 'refactoring', description: 'Git branch to build')
         booleanParam(name: 'SKIP_TESTS', defaultValue: false, description: 'Skip tests?')
     }
 
