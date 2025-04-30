@@ -2,13 +2,11 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'DEPLOY_HOST', defaultValue: '89.216.160.198', description: 'Remote Ubuntu server IP')
-        string(name: 'DEPLOY_USER', defaultValue: 'muhedin', description: 'Remote SSH username')
         string(name: 'PORT', defaultValue: '8081', description: 'Port to run the app on')
     }
 
     environment {
-        REMOTE_PATH = "/opt/jobfinder"
+        DEPLOY_PATH = "/opt/jobfinder"
         JAR_NAME = "jobfinder.jar"
     }
 
@@ -25,16 +23,24 @@ pipeline {
             }
         }
 
-        stage('Deploy to Server') {
+        stage('Deploy Application') {
             steps {
                 script {
-                    def remote = "${params.DEPLOY_USER}@${params.DEPLOY_HOST}"
                     sh """
-                        ssh ${remote} 'mkdir -p ${env.REMOTE_PATH}'
-                        scp target/*.jar ${remote}:${env.REMOTE_PATH}/${env.JAR_NAME}
-                        ssh ${remote} 'pkill -f ${env.JAR_NAME} || true'
-                        ssh ${remote} 'nohup java -jar ${env.REMOTE_PATH}/${env.JAR_NAME} --server.port=${params.PORT} > ${env.REMOTE_PATH}/app.log 2>&1 &'
+                        mkdir -p ${env.DEPLOY_PATH}
+                        cp target/*.jar ${env.DEPLOY_PATH}/${env.JAR_NAME}
+                        pkill -f ${env.JAR_NAME} || true
+                        nohup java -jar ${env.DEPLOY_PATH}/${env.JAR_NAME} --server.port=${params.PORT} > ${env.DEPLOY_PATH}/app.log 2>&1 &
                     """
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                script {
+                    sleep(time: 5, unit: 'SECONDS') // Give the app time to start
+                    sh "curl -s http://localhost:${params.PORT}/actuator/health || true"
                 }
             }
         }
