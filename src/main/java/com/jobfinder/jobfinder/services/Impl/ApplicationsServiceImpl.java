@@ -1,5 +1,6 @@
 package com.jobfinder.jobfinder.services.Impl;
 
+import com.jobfinder.jobfinder.models.dtos.request.JobApplicationRequestDTO;
 import com.jobfinder.jobfinder.models.dtos.response.JobApplicationResponseDTO;
 import com.jobfinder.jobfinder.repositories.ApplicationsRepository;
 import com.jobfinder.jobfinder.services.ApplicationsService;
@@ -23,11 +24,27 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public List<JobApplicationResponseDTO> getApplicationsByUser() {
-//        JobApplicationMapper mapper = new JobApplicationMapper(new AppUserMapper(new Ski), new JobMapper());
-//        List<JobApplicationResponseDTO> applications = applicationsRepository.findAll().stream().map(applications1 -> new JobApplicationMapper(applications1)).collect(Collectors.toList());
-//        JobApplicationResponseDTO response = JobApplicationMapper.toDto(applicationsRepository.findAll());
-//        return null;
-        return new ArrayList<>();
+    public List<JobApplicationResponseDTO> getApplicationsByUser(Long id) {
+        return List.of();
+    }
+
+    @Override
+    public List<JobApplicationResponseDTO> getApplicationsByJob(Long id) {
+        return List.of();
+    }
+
+    @Override
+    public void applyForJob(JobApplicationRequestDTO jobApplicationRequestDTO) {
+
+    }
+
+    @Override
+    public void updateApplication(Long id, JobApplicationRequestDTO jobApplicationRequestDTO) {
+
+    }
+
+    @Override
+    public void deleteApplication(Long id) {
+
     }
 }

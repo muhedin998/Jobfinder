@@ -15,7 +15,6 @@ public enum ApplicationDTOMapper implements EntityMapper<JobApplicationResponseD
         jobApplicationResponseDTO.setApplicationId(entity.getId());
         jobApplicationResponseDTO.setJob(JobDTOMapper.INSTANCE.apply(entity.getJob(), entity.getJob().getId()));
         jobApplicationResponseDTO.setUser(UserDTOMapper.INSTANCE.apply(entity.getUser(), entity.getUser().getId()));
-        jobApplicationResponseDTO.setApplicationStatus(entity.getApplicationStatus());
         jobApplicationResponseDTO.setCoverLetter(entity.getCoverLetter());
         jobApplicationResponseDTO.setCvLink(entity.getCvLink());
         jobApplicationResponseDTO.setAppliedAt(entity.getDateApplied());

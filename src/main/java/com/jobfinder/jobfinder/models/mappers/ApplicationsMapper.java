@@ -11,7 +11,6 @@ public class ApplicationsMapper implements DTOMapper<Applications, JobApplicatio
     public Applications apply(JobApplicationResponseDTO entity) {
         Applications applications = new Applications();
         applications.setId(entity.getApplicationId());
-        applications.setApplicationStatus(entity.getApplicationStatus());
         applications.setDateApplied(entity.getAppliedAt());
         applications.setCvLink(entity.getCvLink());
         applications.setCoverLetter(entity.getCoverLetter());

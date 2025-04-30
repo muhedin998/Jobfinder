@@ -13,7 +13,6 @@ public enum ApplicationsMapper implements DTOMapper<Applications, JobApplication
         applications.setId(responseDTO.getApplicationId());
         applications.setJob(JobMapper.INSTANCE.apply(responseDTO.getJob()));
         applications.setUser(UserMapper.INSTANCE.apply(responseDTO.getUser()));
-        applications.setApplicationStatus(responseDTO.getApplicationStatus());
         applications.setDateApplied(responseDTO.getAppliedAt());
         applications.setCvLink(responseDTO.getCvLink());
         applications.setCoverLetter(responseDTO.getCoverLetter());

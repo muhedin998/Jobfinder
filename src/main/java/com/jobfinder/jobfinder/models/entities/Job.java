@@ -37,8 +37,7 @@ public class Job {
 
     private JobStatus status;
 
-    @ManyToOne
-    private Company company;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser user;
