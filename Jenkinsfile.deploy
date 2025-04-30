@@ -30,9 +30,6 @@ pipeline {
             steps {
                 script {
                     sh """
-                        # Create deployment directory (if not exists)
-                        sudo mkdir -p ${env.DEPLOY_PATH}
-                        sudo chown jenkins:jenkins ${env.DEPLOY_PATH}
 
                         # Copy the new JAR
                         cp target/*.jar ${env.DEPLOY_PATH}/${env.JAR_NAME}
