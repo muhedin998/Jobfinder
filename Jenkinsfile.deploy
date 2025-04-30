@@ -35,7 +35,7 @@ pipeline {
                     sh """
 
                         # Copy the new JAR
-                        cp target/*.jar ${env.DEPLOY_PATH}/${env.JAR_NAME}
+                        cp target/target/*.jar ${env.DEPLOY_PATH}/${env.JAR_NAME}
 
                         # Create systemd service file
                         cat <<EOF | tee /etc/systemd/system/${env.SERVICE_NAME}.service
