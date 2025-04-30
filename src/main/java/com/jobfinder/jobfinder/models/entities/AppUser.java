@@ -1,5 +1,7 @@
 package com.jobfinder.jobfinder.models.entities;
 
+import com.jobfinder.jobfinder.models.dtos.request.UserCreateRequestDTO;
+import com.jobfinder.jobfinder.models.dtos.response.UserResponseDTO;
 import com.jobfinder.jobfinder.models.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -100,5 +102,48 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addSkill(Skill skill) {
+        this.skills.add(skill);
+    }
+
+    public void removeSkill(Skill skill) {
+        this.skills.remove(skill);
+    }
+
+    public void addJob(Job job) {
+        this.jobs.add(job);
+    }
+
+    public void removeJob(Job job) {
+        this.jobs.remove(job);
+    }
+
+    public void addApplication(Applications application) {
+        this.applications.add(application);
+    }
+
+    public void removeApplication(Applications application) {
+        this.applications.remove(application);
+    }
+
+    public void addNotification(Notifications notification) {
+        this.notifications.add(notification);
+    }
+
+    public void removeNotification(Notifications notification) {
+        this.notifications.remove(notification);
+    }
+
+    public AppUser toEntity(UserCreateRequestDTO userDTO) {
+        AppUser user = new AppUser();
+        user.setFullName(userDTO.getFullName());
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setRole(userDTO.getRole());
+        user.setDateCreated(LocalDateTime.now());
+        return user;
     }
 }

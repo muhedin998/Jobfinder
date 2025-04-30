@@ -1,5 +1,10 @@
 package com.jobfinder.jobfinder.services.Impl;
 
+import com.jobfinder.jobfinder.models.dtos.mappers.JobDTOMapper;
+import com.jobfinder.jobfinder.models.dtos.mappers.JobMapper;
+import com.jobfinder.jobfinder.models.dtos.request.JobApplicationRequestDTO;
+import com.jobfinder.jobfinder.models.dtos.request.JobRequestDTO;
+import com.jobfinder.jobfinder.models.dtos.response.JobResponseDTO;
 import com.jobfinder.jobfinder.models.entities.Job;
 import com.jobfinder.jobfinder.repositories.JobRepository;
 import com.jobfinder.jobfinder.services.JobService;
@@ -17,8 +22,9 @@ public class JobServiceImpl implements JobService {
     private JobRepository jobRepository;
 
     @Override
-    public Job createJob(Job job) {
-        return jobRepository.save(job);
+    public JobResponseDTO createJob(JobRequestDTO job) {
+        Job newJob = jobRepository.save(Job.toEntity(job));
+        return JobDTOMapper.INSTANCE.apply(newJob, newJob.getId());
     }
 
     @Override

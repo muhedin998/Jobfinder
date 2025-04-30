@@ -1,5 +1,8 @@
 package com.jobfinder.jobfinder.controllers;
 
+import com.jobfinder.jobfinder.models.dtos.request.JobApplicationRequestDTO;
+import com.jobfinder.jobfinder.models.dtos.request.JobRequestDTO;
+import com.jobfinder.jobfinder.models.dtos.response.JobResponseDTO;
 import com.jobfinder.jobfinder.models.entities.Job;
 import com.jobfinder.jobfinder.services.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,8 @@ public class  JobController {
     private JobService jobService;
 
     @PostMapping("/create")
-    public ResponseEntity<Job> createJob (@RequestBody Job job) {
-        var newJob = job;
-        newJob.setDatePosted(LocalDateTime.now());
-        return ResponseEntity.ok(jobService.createJob(newJob));
+    public ResponseEntity<JobResponseDTO> createJob (@RequestBody JobRequestDTO job) {
+        return ResponseEntity.ok(jobService.createJob(job));
     }
 
     @GetMapping("/get-all-jobs")
@@ -45,7 +46,7 @@ public class  JobController {
     @GetMapping("/{title}")
     public ResponseEntity<List<Job>> getJobByTitle(@PathVariable String title){
         //TODO: Implement title serch !
-        List<Job> jobs = jobService.getAllJobs().stream().filter(job -> job.getTitel().contains(title)).collect(Collectors.toList());
+        List<Job> jobs = jobService.getAllJobs().stream().filter(job -> job.getTitle().contains(title)).collect(Collectors.toList());
         return ResponseEntity.ok(jobs);
     }
 }
