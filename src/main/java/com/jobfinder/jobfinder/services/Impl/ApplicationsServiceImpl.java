@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +24,10 @@ public class ApplicationsServiceImpl implements ApplicationsService {
 
     @Override
     public List<JobApplicationResponseDTO> getApplicationsByUser() {
-        JobApplicationMapper mapper = new JobApplicationMapper(new AppUserMapper(new Ski), new JobMapper());
-        List<JobApplicationResponseDTO> applications = applicationsRepository.findAll().stream().map(applications1 -> new JobApplicationMapper(applications1)).collect(Collectors.toList());
-        JobApplicationResponseDTO response = JobApplicationMapper.toDto(applicationsRepository.findAll());
-        return null;
+//        JobApplicationMapper mapper = new JobApplicationMapper(new AppUserMapper(new Ski), new JobMapper());
+//        List<JobApplicationResponseDTO> applications = applicationsRepository.findAll().stream().map(applications1 -> new JobApplicationMapper(applications1)).collect(Collectors.toList());
+//        JobApplicationResponseDTO response = JobApplicationMapper.toDto(applicationsRepository.findAll());
+//        return null;
+        return new ArrayList<>();
     }
 }
