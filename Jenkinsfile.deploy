@@ -8,10 +8,12 @@ pipeline {
     environment {
         DEPLOY_PATH = "/opt/jobfinder"
         JAR_NAME = "jobfinder.jar"
+        SERVICE_NAME = "jobfinder"
     }
 
     stages {
-        stage('Copy Artifact from Build Job') {
+        // Copy the JAR from the build job
+        stage('Copy Artifact') {
             steps {
                 copyArtifacts(
                     projectName: 'Jobfinder Spring Boot',
@@ -23,26 +25,77 @@ pipeline {
             }
         }
 
+        // Stop old instance, deploy new JAR, and start via systemd
         stage('Deploy Application') {
             steps {
                 script {
                     sh """
-                        mkdir -p ${env.DEPLOY_PATH}
+                        # Create deployment directory (if not exists)
+                        sudo mkdir -p ${env.DEPLOY_PATH}
+                        sudo chown jenkins:jenkins ${env.DEPLOY_PATH}
+
+                        # Copy the new JAR
                         cp target/*.jar ${env.DEPLOY_PATH}/${env.JAR_NAME}
-                        pkill -f ${env.JAR_NAME} || true
-                        nohup java -jar ${env.DEPLOY_PATH}/${env.JAR_NAME} --server.port=${params.PORT} > ${env.DEPLOY_PATH}/app.log 2>&1 &
+
+                        # Create systemd service file
+                        cat <<EOF | sudo tee /etc/systemd/system/${env.SERVICE_NAME}.service
+                        [Unit]
+                        Description=JobFinder Application
+                        After=network.target
+
+                        [Service]
+                        User=jenkins
+                        WorkingDirectory=${env.DEPLOY_PATH}
+                        ExecStart=/usr/bin/java -jar ${env.JAR_NAME} --server.port=${params.PORT}
+                        SuccessExitStatus=143
+                        Restart=always
+                        RestartSec=3
+
+                        [Install]
+                        WantedBy=multi-user.target
+                        EOF
+
+                        # Reload and enable the service
+                        sudo systemctl daemon-reload
+                        sudo systemctl enable ${env.SERVICE_NAME}.service
+                        sudo systemctl restart ${env.SERVICE_NAME}.service
                     """
                 }
             }
         }
 
+        // Verify the app is running
         stage('Verify Deployment') {
             steps {
                 script {
-                    sleep(time: 5, unit: 'SECONDS') // Give the app time to start
-                    sh "curl -s http://localhost:${params.PORT}/actuator/health || true"
+                    sleep(time: 5, unit: 'SECONDS') // Wait for app to start
+                    def healthCheck = sh(
+                        script: "curl -s http://localhost:${params.PORT}/actuator/health || echo 'FAILED'",
+                        returnStdout: true
+                    ).trim()
+
+                    if (healthCheck.contains('"status":"UP"')) {
+                        echo "✅ Application is running and healthy!"
+                    } else {
+                        error("❌ Deployment failed! Health check: ${healthCheck}")
+                    }
                 }
             }
+        }
+    }
+
+    post {
+        failure {
+            slackSend(
+                channel: '#deployments',
+                message: "🚨 Deployment of JobFinder failed! Check Jenkins: ${env.BUILD_URL}"
+            )
+        }
+        success {
+            slackSend(
+                channel: '#deployments',
+                message: "✅ JobFinder deployed successfully on port ${params.PORT}! ${env.BUILD_URL}"
+            )
         }
     }
 }
