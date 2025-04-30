@@ -22,6 +22,9 @@ pipeline {
                     fingerprintArtifacts: true,  // Correct parameter name
                     target: 'target/'  // Optional: specify target directory
                 )
+
+                // Debugging: List the contents of the workspace
+                sh 'ls -lR'
             }
         }
 
