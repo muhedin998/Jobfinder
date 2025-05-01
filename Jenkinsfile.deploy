@@ -33,23 +33,22 @@ pipeline {
                         cp target/target/*.jar ${env.DEPLOY_PATH}/${env.JAR_NAME}
 
                         # Create systemd service file using tee
-                        sudo tee /etc/systemd/system/${env.SERVICE_NAME}.service > /dev/null <<EOF
-                            [Unit]
-                            Description=JobFinder Application
-                            After=network.target
+                        cat <<EOF | sudo tee /etc/systemd/system/${env.SERVICE_NAME}.service
+                        [Unit]
+                        Description=JobFinder Application
+                        After=network.target
 
-                            [Service]
-                            User=jenkins
-                            WorkingDirectory=${env.DEPLOY_PATH}
-                            ExecStart=/usr/bin/java -jar ${env.JAR_NAME} --server.port=${params.PORT}
-                            SuccessExitStatus=143
-                            Restart=always
-                            RestartSec=3
+                        [Service]
+                        User=jenkins
+                        WorkingDirectory=${env.DEPLOY_PATH}
+                        ExecStart=/usr/bin/java -jar ${env.JAR_NAME} --server.port=${params.PORT}
+                        SuccessExitStatus=143
+                        Restart=always
+                        RestartSec=3
 
-                            [Install]
-                            WantedBy=multi-user.target
-                            EOF
-
+                        [Install]
+                        WantedBy=multi-user.target
+                        EOF
                         # Reload systemd and restart service
                         sudo systemctl daemon-reload
                         sudo systemctl enable ${env.SERVICE_NAME}.service
