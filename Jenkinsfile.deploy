@@ -53,9 +53,9 @@ pipeline {
                         EOF
 
                         # Reload and enable the service
-                        systemctl daemon-reload
-                        systemctl enable ${env.SERVICE_NAME}.service
-                        systemctl restart ${env.SERVICE_NAME}.service
+                        sudo systemctl daemon-reload
+                        sudo systemctl enable ${env.SERVICE_NAME}.service
+                        sudo systemctl restart ${env.SERVICE_NAME}.service
                     """
                 }
             }
