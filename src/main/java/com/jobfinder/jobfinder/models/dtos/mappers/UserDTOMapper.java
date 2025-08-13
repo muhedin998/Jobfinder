@@ -17,10 +17,10 @@ public enum UserDTOMapper implements EntityMapper<UserResponseDTO, AppUser, Long
         userResponseDTO.setEmail(entity.getEmail());
         userResponseDTO.setRole(entity.getRole());
         userResponseDTO.setSkills(entity.getSkills().stream().map(skill ->
-                SkillDTOMapper.INSTANCE.apply(skill, skill.getSkillId()))
+                SkillDTOMapper.INSTANCE.apply(skill, skill.getId()))
                 .collect(Collectors.toSet()));
         userResponseDTO.setCreatedAt(entity.getDateCreated());
-        return null;
+        return userResponseDTO;
     }
 
 }

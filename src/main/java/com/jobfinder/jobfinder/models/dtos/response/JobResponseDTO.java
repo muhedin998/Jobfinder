@@ -2,7 +2,7 @@ package com.jobfinder.jobfinder.models.dtos.response;
 
 import com.jobfinder.jobfinder.models.dtos.JobCategoryDTO;
 import com.jobfinder.jobfinder.models.dtos.SkillDTO;
-import com.jobfinder.jobfinder.models.enums.JobStatus;
+import com.jobfinder.jobfinder.models.enums.Status;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,5 +21,5 @@ public class JobResponseDTO {
     private Set<SkillDTO> skills;
     private String companyName;
     private LocalDateTime postedAt;
-    private JobStatus status;
+    private Status status;
 }

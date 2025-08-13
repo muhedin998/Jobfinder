@@ -10,7 +10,7 @@ public enum SkillDTOMapper implements EntityMapper<SkillDTO, Skill, Long> {
     @Override
     public SkillDTO apply(Skill entity, Long id) {
         SkillDTO skillDTO = new SkillDTO();
-        skillDTO.setSkillId(entity.getSkillId());
+        skillDTO.setSkillId(entity.getId());
         skillDTO.setSkillName(entity.getSkillName());
         return skillDTO;
     }

@@ -1,7 +1,5 @@
 package com.jobfinder.jobfinder.models.entities;
 
-import com.jobfinder.jobfinder.models.dtos.request.UserCreateRequestDTO;
-import com.jobfinder.jobfinder.models.dtos.response.UserResponseDTO;
 import com.jobfinder.jobfinder.models.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,7 +33,6 @@ public class AppUser implements UserDetails {
 
     private String password;
 
-    private String passwordHash;
 
     @Enumerated(EnumType.STRING)
     private Roles role;
@@ -56,6 +53,15 @@ public class AppUser implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
     private Set<Skill> skills;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserProfile userProfile;
+
+    @OneToMany(mappedBy = "user")
+    private List<JobAlert> jobAlerts;
+
+    @OneToMany(mappedBy = "reviewer")
+    private List<CompanyReview> companyReviews;
 
     private LocalDateTime dateCreated;
 
@@ -136,14 +142,4 @@ public class AppUser implements UserDetails {
         this.notifications.remove(notification);
     }
 
-    public AppUser toEntity(UserCreateRequestDTO userDTO) {
-        AppUser user = new AppUser();
-        user.setFullName(userDTO.getFullName());
-        user.setUsername(userDTO.getUsername());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setRole(userDTO.getRole());
-        user.setDateCreated(LocalDateTime.now());
-        return user;
-    }
 }

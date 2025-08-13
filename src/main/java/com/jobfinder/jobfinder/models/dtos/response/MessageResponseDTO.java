@@ -1,7 +1,10 @@
 package com.jobfinder.jobfinder.models.dtos.response;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 public class MessageResponseDTO {
     private Long messageId;
     private UserResponseDTO sender;

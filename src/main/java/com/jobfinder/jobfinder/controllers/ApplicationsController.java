@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/applications")
 @RequiredArgsConstructor
-public class ApplicatinosControllers {
+public class ApplicationsController {
     private final ApplicationsService applicationsService;
 
     @GetMapping("/user/{id}")

@@ -17,14 +17,14 @@ public enum JobDTOMapper implements EntityMapper<JobResponseDTO, Job, Long> {
         jobResponseDTO.setDescription(entity.getDescription());
         jobResponseDTO.setLocation(entity.getLocation());
         jobResponseDTO.setCategory(CategoryDTOMapper.INSTANCE
-                .apply(entity.getJobCategory(), entity.getJobCategory().getCategoryId()));
-        jobResponseDTO.setRequirements(entity.getRequirmnets());
+                .apply(entity.getJobCategory(), entity.getJobCategory().getId()));
+        jobResponseDTO.setRequirements(entity.getRequirements());
         jobResponseDTO.setSalary(entity.getSalary());
         jobResponseDTO.setJobType(entity.getJobType());
         jobResponseDTO.setCompanyName(entity.getCompanyName());
         jobResponseDTO.setPostedAt(entity.getDatePosted());
         jobResponseDTO.setSkills(entity.getSkills().stream().map(skill ->
-                SkillDTOMapper.INSTANCE.apply(skill, skill.getSkillId()))
+                SkillDTOMapper.INSTANCE.apply(skill, skill.getId()))
                 .collect(Collectors.toSet()));
         return jobResponseDTO;
     }

@@ -4,7 +4,7 @@ import com.jobfinder.jobfinder.models.dtos.mappers.JobCatergoryMapper;
 import com.jobfinder.jobfinder.models.dtos.mappers.SkillMapper;
 import com.jobfinder.jobfinder.models.dtos.mappers.UserMapper;
 import com.jobfinder.jobfinder.models.dtos.request.JobRequestDTO;
-import com.jobfinder.jobfinder.models.enums.JobStatus;
+import com.jobfinder.jobfinder.models.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -31,11 +31,17 @@ public class Job {
 
     private Float salary;
 
-    private String requirmnets;
+    private String requirements;
 
     private LocalDateTime datePosted;
 
-    private JobStatus status;
+    private LocalDateTime applicationDeadline;
+
+    private Boolean isRemote;
+
+    private String experienceLevel;
+
+    private Status status;
 
 
     @ManyToOne
@@ -59,7 +65,7 @@ public class Job {
     private JobCategory jobCategory;
 
     @ManyToOne
-    @JoinTable(name = "company_id")
+    @JoinColumn(name = "company_id")
     private Company company;
 
     public static Job toEntity(JobRequestDTO jobRequestDTO) {
@@ -70,11 +76,11 @@ public class Job {
         job.setLocation(jobRequestDTO.getLocation());
         job.setJobType(jobRequestDTO.getJobType());
         job.setSalary(Float.parseFloat(jobRequestDTO.getSalary()));
-        job.setRequirmnets(jobRequestDTO.getRequirements());
+        job.setRequirements(jobRequestDTO.getRequirements());
         job.setDatePosted(LocalDateTime.now());
         job.setJobCategory(JobCatergoryMapper.INSTANCE.apply(jobRequestDTO.getCategory()));
         job.setSkills(jobRequestDTO.getSkill().stream().map(SkillMapper.INSTANCE::apply).collect(Collectors.toSet()));
-        job.setStatus(JobStatus.ACTIVE);
+        job.setStatus(Status.ACTIVE);
         job.setUser(UserMapper.INSTANCE.apply(jobRequestDTO.getUser()));
 
         return job;

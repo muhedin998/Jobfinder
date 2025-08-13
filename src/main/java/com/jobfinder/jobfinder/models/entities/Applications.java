@@ -4,8 +4,7 @@ import com.jobfinder.jobfinder.models.dtos.mappers.JobMapper;
 import com.jobfinder.jobfinder.models.dtos.mappers.UserMapper;
 import com.jobfinder.jobfinder.models.dtos.request.JobApplicationRequestDTO;
 
-import com.jobfinder.jobfinder.models.enums.JobStatus;
-import com.jobfinder.jobfinder.models.enums.Staus;
+import com.jobfinder.jobfinder.models.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,7 +17,7 @@ public class Applications {
     @GeneratedValue( strategy = GenerationType.AUTO)
     private Long id;
 
-    private JobStatus applicationStatus;
+    private Status applicationStatus;
 
     private String coverLetter;
 
@@ -36,7 +35,7 @@ public class Applications {
 
     public Applications toEntity(JobApplicationRequestDTO jobApplicationRequestDTO) {
         Applications applications = new Applications();
-        applications.setApplicationStatus(JobStatus.ACTIVE);
+        applications.setApplicationStatus(Status.ACTIVE);
         applications.setCoverLetter(jobApplicationRequestDTO.getCoverLetter());
         applications.setCvLink(jobApplicationRequestDTO.getCvLink());
         applications.setUser(UserMapper.INSTANCE.apply(jobApplicationRequestDTO.getUser()));

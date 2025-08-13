@@ -11,7 +11,7 @@ public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long skillId;
+    private Long id;
 
     private String skillName;
 

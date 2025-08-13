@@ -12,7 +12,7 @@ public enum JobMapper implements DTOMapper<Job, JobResponseDTO> {
     INSTANCE;
 
     @Autowired
-    private JobService jobService;
+    private  JobService jobService;
 
     @Override
     public Job apply(JobResponseDTO dto) {
@@ -21,7 +21,7 @@ public enum JobMapper implements DTOMapper<Job, JobResponseDTO> {
         job.setId(dto.getJobId());
         job.setTitle(dto.getTitle());
         job.setDescription(dto.getDescription());
-        job.setRequirmnets(dto.getRequirements());
+        job.setRequirements(dto.getRequirements());
         job.setLocation(dto.getLocation());
         job.setJobType(dto.getJobType());
         job.setJobCategory(JobCatergoryMapper.INSTANCE.apply(dto.getCategory()));

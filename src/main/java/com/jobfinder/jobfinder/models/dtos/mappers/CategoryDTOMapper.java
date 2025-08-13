@@ -10,7 +10,7 @@ public enum CategoryDTOMapper implements EntityMapper<JobCategoryDTO, JobCategor
     @Override
     public JobCategoryDTO apply(JobCategory entity, Long id) {
         JobCategoryDTO jobCategoryDTO = new JobCategoryDTO();
-        jobCategoryDTO.setCategoryId(entity.getCategoryId());
+        jobCategoryDTO.setCategoryId(entity.getId());
         jobCategoryDTO.setCategoryName(entity.getCategoryName());
 
         return jobCategoryDTO;

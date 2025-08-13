@@ -1,6 +1,6 @@
 package com.jobfinder.jobfinder.models.enums;
 
-public enum Staus {
+public enum Status {
     ACTIVE,
     PENDING,
     DENIED,

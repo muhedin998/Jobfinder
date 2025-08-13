@@ -15,24 +15,24 @@ public class AppUserController {
     @Autowired
     private AppUserService appUserService;
 
-    @PostMapping("/creata")
+    @PostMapping("/create")
     public ResponseEntity<AppUser> createUser(@RequestBody AppUser appUser) {
         return ResponseEntity.ok(appUserService.createUser(appUser));
     }
 
-    @PostMapping("/user/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         appUserService.deleteUser(id);
         return ResponseEntity.ok("User deleted !");
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<AppUser> createUser(@PathVariable Long id) {
+    public ResponseEntity<AppUser> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(appUserService.getUserById(id));
     }
 
     @GetMapping("/user/all")
-    public ResponseEntity<List<AppUser>> createUser() {
+    public ResponseEntity<List<AppUser>> getAllUsers() {
         return ResponseEntity.ok(appUserService.getAllUser());
     }
 }
