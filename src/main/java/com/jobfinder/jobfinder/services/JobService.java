@@ -5,9 +5,12 @@ import com.jobfinder.jobfinder.models.dtos.request.JobRequestDTO;
 import com.jobfinder.jobfinder.models.dtos.response.JobApplicationResponseDTO;
 import com.jobfinder.jobfinder.models.dtos.response.JobResponseDTO;
 import com.jobfinder.jobfinder.models.entities.Job;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface JobService {
     JobResponseDTO createJob(JobRequestDTO job);
 
