@@ -1,53 +1,79 @@
 package com.jobfinder.jobfinder.controllers;
 
-import com.jobfinder.jobfinder.models.dtos.request.JobApplicationRequestDTO;
-import com.jobfinder.jobfinder.models.dtos.request.JobRequestDTO;
+import com.jobfinder.jobfinder.models.dtos.request.CreateJobRequestDTO;
+import com.jobfinder.jobfinder.models.dtos.request.UpdateJobRequestDTO;
 import com.jobfinder.jobfinder.models.dtos.response.JobResponseDTO;
 import com.jobfinder.jobfinder.models.entities.Job;
-import com.jobfinder.jobfinder.services.JobService;
+import com.jobfinder.jobfinder.models.enums.JobType;
+import com.jobfinder.jobfinder.models.enums.ExperienceLevel;
+import com.jobfinder.jobfinder.services.Impl.JobServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/job")
+@RequestMapping("/api/v2/jobs")
 @CrossOrigin("*")
-public class  JobController {
+public class JobController {
+    
     @Autowired
-    private JobService jobService;
+    private JobServiceImpl jobService;
 
-    @PostMapping("/create")
-    public ResponseEntity<JobResponseDTO> createJob (@Valid @RequestBody JobRequestDTO job) {
-        return ResponseEntity.ok(jobService.createJob(job));
+    @PostMapping
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<JobResponseDTO> createJob(@Valid @RequestBody CreateJobRequestDTO request) {
+        JobResponseDTO response = jobService.createJob(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/get-all-jobs")
-    public ResponseEntity<List<Job>> getAllJobs () {
-        System.out.println(LocalDate.now());
-        return ResponseEntity.ok(jobService.getAllJobs());
+    @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<JobResponseDTO> updateJob(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateJobRequestDTO request) {
+        JobResponseDTO response = jobService.updateJob(id, request);
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/job/{id}")
+    @GetMapping
+    public ResponseEntity<List<Job>> getAllJobs() {
+        List<Job> jobs = jobService.getAllJobs();
+        return ResponseEntity.ok(jobs);
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<Job> getJobById(@PathVariable Long id) {
-        return ResponseEntity.ok(jobService.getJobById(id));
+        Job job = jobService.getJobById(id);
+        return ResponseEntity.ok(job);
     }
 
-    @DeleteMapping("/job/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> deleteJob(@PathVariable Long id) {
         jobService.deleteJob(id);
-        return ResponseEntity.ok("Job deleted !");
+        return ResponseEntity.ok("Job deleted successfully");
     }
 
-    @GetMapping("/{title}")
-    public ResponseEntity<List<Job>> getJobByTitle(@PathVariable String title){
-        //TODO: Implement title serch !
-        List<Job> jobs = jobService.getAllJobs().stream().filter(job -> job.getTitle().contains(title)).collect(Collectors.toList());
+    @GetMapping("/search")
+    public ResponseEntity<List<Job>> searchJobs(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) JobType jobType,
+            @RequestParam(required = false) ExperienceLevel experienceLevel,
+            @RequestParam(required = false) Boolean isRemote) {
+        List<Job> jobs = jobService.searchJobs(title, location, jobType, experienceLevel, isRemote);
+        return ResponseEntity.ok(jobs);
+    }
+    
+    @GetMapping("/my-jobs")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<Job>> getMyJobs() {
+        List<Job> jobs = jobService.getJobsByCurrentUser();
         return ResponseEntity.ok(jobs);
     }
 }

@@ -1,14 +1,23 @@
 package com.jobfinder.jobfinder.models.entities;
 
 import com.jobfinder.jobfinder.models.enums.Status;
+import com.jobfinder.jobfinder.models.enums.JobType;
+import com.jobfinder.jobfinder.models.enums.ExperienceLevel;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,9 +31,11 @@ public class Job {
 
     private String location;
 
-    private String jobType;
+    @Enumerated(EnumType.STRING)
+    private JobType jobType;
 
-    private Float salary;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal salary;
 
     private String requirements;
 
@@ -34,9 +45,21 @@ public class Job {
 
     private Boolean isRemote;
 
-    private String experienceLevel;
+    @Enumerated(EnumType.STRING)
+    private ExperienceLevel experienceLevel;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
+    
+    @Column(length = 1000)
+    private String benefits;
+    
+    @Column(name = "positions_available")
+    private Integer positions;
+    
+    @Column(name = "is_draft")
+    @Builder.Default
+    private Boolean isDraft = false;
 
 
     @ManyToOne

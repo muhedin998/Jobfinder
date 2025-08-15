@@ -1,14 +1,10 @@
 package com.jobfinder.jobfinder.models.dtos.mappers;
 
-import com.jobfinder.jobfinder.exceptions.InvalidDataException;
-import com.jobfinder.jobfinder.models.dtos.request.JobRequestDTO;
 import com.jobfinder.jobfinder.models.dtos.response.JobResponseDTO;
 import com.jobfinder.jobfinder.models.entities.Job;
-import com.jobfinder.jobfinder.models.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,49 +15,6 @@ public class JobMapperComponent {
 
     @Autowired
     private SkillMapperComponent skillMapper;
-
-    @Autowired
-    private UserMapperComponent userMapper;
-
-    public Job toEntity(JobRequestDTO dto) {
-        if (dto == null) return null;
-
-        Job job = new Job();
-        job.setTitle(dto.getTitle());
-        job.setCompanyName(dto.getCompanyName());
-        job.setDescription(dto.getDescription());
-        job.setLocation(dto.getLocation());
-        job.setJobType(dto.getJobType());
-        job.setRequirements(dto.getRequirements());
-        job.setDatePosted(LocalDateTime.now());
-        job.setStatus(Status.ACTIVE);
-
-        // Safe salary parsing
-        if (dto.getSalary() != null && !dto.getSalary().trim().isEmpty()) {
-            try {
-                job.setSalary(Float.parseFloat(dto.getSalary()));
-            } catch (NumberFormatException e) {
-                throw new InvalidDataException("Invalid salary format: " + dto.getSalary());
-            }
-        }
-
-        // Map relationships
-        if (dto.getCategory() != null) {
-            job.setJobCategory(jobCategoryMapper.toEntity(dto.getCategory()));
-        }
-
-        if (dto.getSkill() != null) {
-            job.setSkills(dto.getSkill().stream()
-                    .map(skillMapper::toEntity)
-                    .collect(Collectors.toSet()));
-        }
-
-        if (dto.getUser() != null) {
-            job.setUser(userMapper.toEntity(dto.getUser()));
-        }
-
-        return job;
-    }
 
     public JobResponseDTO toResponseDto(Job entity) {
         if (entity == null) return null;
@@ -76,7 +29,13 @@ public class JobMapperComponent {
         dto.setSalary(entity.getSalary());
         dto.setCompanyName(entity.getCompanyName());
         dto.setPostedAt(entity.getDatePosted());
+        dto.setApplicationDeadline(entity.getApplicationDeadline());
         dto.setStatus(entity.getStatus());
+        dto.setExperienceLevel(entity.getExperienceLevel());
+        dto.setIsRemote(entity.getIsRemote());
+        dto.setBenefits(entity.getBenefits());
+        dto.setPositions(entity.getPositions());
+        dto.setIsDraft(entity.getIsDraft());
 
         // Map relationships
         if (entity.getJobCategory() != null) {
