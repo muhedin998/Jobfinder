@@ -1,18 +1,18 @@
 package com.jobfinder.jobfinder.models.dtos.mappers;
 
-import com.jobfinder.jobfinder.integration.EntityMapper;
 import com.jobfinder.jobfinder.models.dtos.JobCategoryDTO;
 import com.jobfinder.jobfinder.models.entities.JobCategory;
+import org.springframework.stereotype.Component;
 
-public enum CategoryDTOMapper implements EntityMapper<JobCategoryDTO, JobCategory, Long> {
-    INSTANCE;
+@Component
+public class CategoryDTOMapper {
 
-    @Override
     public JobCategoryDTO apply(JobCategory entity, Long id) {
-        JobCategoryDTO jobCategoryDTO = new JobCategoryDTO();
-        jobCategoryDTO.setCategoryId(entity.getId());
-        jobCategoryDTO.setCategoryName(entity.getCategoryName());
-
-        return jobCategoryDTO;
+        if (entity == null) return null;
+        
+        return JobCategoryDTO.builder()
+                .categoryId(entity.getId())
+                .categoryName(entity.getCategoryName())
+                .build();
     }
 }

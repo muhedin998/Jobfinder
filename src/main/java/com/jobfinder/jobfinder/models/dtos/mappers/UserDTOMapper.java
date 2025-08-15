@@ -1,26 +1,31 @@
 package com.jobfinder.jobfinder.models.dtos.mappers;
 
-import com.jobfinder.jobfinder.integration.EntityMapper;
 import com.jobfinder.jobfinder.models.dtos.response.UserResponseDTO;
 import com.jobfinder.jobfinder.models.entities.AppUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
-public enum UserDTOMapper implements EntityMapper<UserResponseDTO, AppUser, Long> {
-    INSTANCE;
+@Component
+public class UserDTOMapper {
 
-    @Override
+    @Autowired
+    private SkillDTOMapper skillDTOMapper;
+
     public UserResponseDTO apply(AppUser entity, Long id) {
-        UserResponseDTO userResponseDTO = new UserResponseDTO();
-        userResponseDTO.setUserId(entity.getId());
-        userResponseDTO.setUsername(entity.getUsername());
-        userResponseDTO.setEmail(entity.getEmail());
-        userResponseDTO.setRole(entity.getRole());
-        userResponseDTO.setSkills(entity.getSkills().stream().map(skill ->
-                SkillDTOMapper.INSTANCE.apply(skill, skill.getId()))
-                .collect(Collectors.toSet()));
-        userResponseDTO.setCreatedAt(entity.getDateCreated());
-        return userResponseDTO;
+        if (entity == null) return null;
+        
+        return UserResponseDTO.builder()
+                .userId(entity.getId())
+                .username(entity.getUsername())
+                .email(entity.getEmail())
+                .role(entity.getRole())
+                .skills(entity.getSkills() != null ? 
+                    entity.getSkills().stream()
+                        .map(skill -> skillDTOMapper.apply(skill, skill.getId()))
+                        .collect(Collectors.toSet()) : null)
+                .createdAt(entity.getDateCreated())
+                .build();
     }
-
 }

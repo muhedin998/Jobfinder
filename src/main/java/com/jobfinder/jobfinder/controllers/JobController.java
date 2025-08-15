@@ -5,6 +5,7 @@ import com.jobfinder.jobfinder.models.dtos.request.JobRequestDTO;
 import com.jobfinder.jobfinder.models.dtos.response.JobResponseDTO;
 import com.jobfinder.jobfinder.models.entities.Job;
 import com.jobfinder.jobfinder.services.JobService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class  JobController {
     private JobService jobService;
 
     @PostMapping("/create")
-    public ResponseEntity<JobResponseDTO> createJob (@RequestBody JobRequestDTO job) {
+    public ResponseEntity<JobResponseDTO> createJob (@Valid @RequestBody JobRequestDTO job) {
         return ResponseEntity.ok(jobService.createJob(job));
     }
 

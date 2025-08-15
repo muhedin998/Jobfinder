@@ -1,31 +1,41 @@
 package com.jobfinder.jobfinder.models.dtos.mappers;
 
-import com.jobfinder.jobfinder.integration.EntityMapper;
 import com.jobfinder.jobfinder.models.dtos.response.JobResponseDTO;
 import com.jobfinder.jobfinder.models.entities.Job;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
-public enum JobDTOMapper implements EntityMapper<JobResponseDTO, Job, Long> {
-    INSTANCE;
+@Component
+public class JobDTOMapper {
 
-    @Override
+    @Autowired
+    private CategoryDTOMapper categoryDTOMapper;
+
+    @Autowired
+    private SkillDTOMapper skillDTOMapper;
+
     public JobResponseDTO apply(Job entity, Long id) {
-        JobResponseDTO jobResponseDTO = new JobResponseDTO();
-        jobResponseDTO.setJobId(entity.getId());
-        jobResponseDTO.setTitle(entity.getTitle());
-        jobResponseDTO.setDescription(entity.getDescription());
-        jobResponseDTO.setLocation(entity.getLocation());
-        jobResponseDTO.setCategory(CategoryDTOMapper.INSTANCE
-                .apply(entity.getJobCategory(), entity.getJobCategory().getId()));
-        jobResponseDTO.setRequirements(entity.getRequirements());
-        jobResponseDTO.setSalary(entity.getSalary());
-        jobResponseDTO.setJobType(entity.getJobType());
-        jobResponseDTO.setCompanyName(entity.getCompanyName());
-        jobResponseDTO.setPostedAt(entity.getDatePosted());
-        jobResponseDTO.setSkills(entity.getSkills().stream().map(skill ->
-                SkillDTOMapper.INSTANCE.apply(skill, skill.getId()))
-                .collect(Collectors.toSet()));
-        return jobResponseDTO;
+        if (entity == null) return null;
+        
+        return JobResponseDTO.builder()
+                .jobId(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .location(entity.getLocation())
+                .category(entity.getJobCategory() != null ? 
+                    categoryDTOMapper.apply(entity.getJobCategory(), entity.getJobCategory().getId()) : null)
+                .requirements(entity.getRequirements())
+                .salary(entity.getSalary())
+                .jobType(entity.getJobType())
+                .companyName(entity.getCompanyName())
+                .postedAt(entity.getDatePosted())
+                .status(entity.getStatus())
+                .skills(entity.getSkills() != null ? 
+                    entity.getSkills().stream()
+                        .map(skill -> skillDTOMapper.apply(skill, skill.getId()))
+                        .collect(Collectors.toSet()) : null)
+                .build();
     }
 }

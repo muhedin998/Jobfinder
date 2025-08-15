@@ -1,5 +1,5 @@
 package com.jobfinder.jobfinder.integration;
 
-public interface EntityMapper<E, D, L> {
-    public <E> E apply(D entity, L id);
+public interface EntityMapper<D, E, L> {
+    D apply(E entity, L id);
 }

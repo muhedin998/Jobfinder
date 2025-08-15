@@ -1,23 +1,37 @@
 package com.jobfinder.jobfinder.models.dtos.mappers;
 
-import com.jobfinder.jobfinder.integration.EntityMapper;
 import com.jobfinder.jobfinder.models.dtos.response.JobApplicationResponseDTO;
 import com.jobfinder.jobfinder.models.entities.Applications;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
+@Component
+public class ApplicationDTOMapper {
 
-public enum ApplicationDTOMapper implements EntityMapper<JobApplicationResponseDTO, Applications, Long> {
-    INSTANCE;
+    @Autowired
+    private JobDTOMapper jobDTOMapper;
+    
+    @Autowired
+    private UserDTOMapper userDTOMapper;
 
-    @Override
     public JobApplicationResponseDTO apply(Applications entity, Long id) {
-        JobApplicationResponseDTO jobApplicationResponseDTO = new JobApplicationResponseDTO();
-        jobApplicationResponseDTO.setApplicationId(entity.getId());
-        jobApplicationResponseDTO.setJob(JobDTOMapper.INSTANCE.apply(entity.getJob(), entity.getJob().getId()));
-        jobApplicationResponseDTO.setUser(UserDTOMapper.INSTANCE.apply(entity.getUser(), entity.getUser().getId()));
-        jobApplicationResponseDTO.setCoverLetter(entity.getCoverLetter());
-        jobApplicationResponseDTO.setCvLink(entity.getCvLink());
-        jobApplicationResponseDTO.setAppliedAt(entity.getDateApplied());
-        return jobApplicationResponseDTO;
+        if (entity == null) return null;
+        
+        JobApplicationResponseDTO dto = new JobApplicationResponseDTO();
+        dto.setApplicationId(entity.getId());
+        
+        if (entity.getJob() != null) {
+            dto.setJob(jobDTOMapper.apply(entity.getJob(), entity.getJob().getId()));
+        }
+        
+        if (entity.getUser() != null) {
+            dto.setUser(userDTOMapper.apply(entity.getUser(), entity.getUser().getId()));
+        }
+        
+        dto.setCoverLetter(entity.getCoverLetter());
+        dto.setCvLink(entity.getCvLink());
+        dto.setAppliedAt(entity.getDateApplied());
+        
+        return dto;
     }
 }
