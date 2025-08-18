@@ -4,11 +4,13 @@ import com.jobfinder.jobfinder.models.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -16,7 +18,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -38,12 +41,15 @@ public class AppUser implements UserDetails {
     private Roles role;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Applications> applications;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Job> jobs;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Notifications> notifications;
 
     @ManyToMany
@@ -52,15 +58,19 @@ public class AppUser implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
+    @JsonIgnore
     private Set<Skill> skills;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private UserProfile userProfile;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<JobAlert> jobAlerts;
 
     @OneToMany(mappedBy = "reviewer")
+    @JsonIgnore
     private List<CompanyReview> companyReviews;
 
     private LocalDateTime dateCreated;
@@ -140,6 +150,31 @@ public class AppUser implements UserDetails {
 
     public void removeNotification(Notifications notification) {
         this.notifications.remove(notification);
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", dateCreated=" + dateCreated +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AppUser)) return false;
+        AppUser appUser = (AppUser) o;
+        return id != null && id.equals(appUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
 }

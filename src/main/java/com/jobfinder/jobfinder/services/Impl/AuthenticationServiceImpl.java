@@ -81,6 +81,7 @@ public class AuthenticationServiceImpl {
         }
         
         try {
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getUsername(),
